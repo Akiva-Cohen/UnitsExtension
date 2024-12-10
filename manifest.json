@@ -3,24 +3,18 @@
     "name": "Units Replacer",
     "description": "Automatically convert units",
     "version": "0.0.1",
-    "icons": {
-        "16" : "placeholder16.png",
-        "48" : "placeholder48.png",
-        "128" : "placeholder128.png"
-    },
+
     "action" : {
-        "default_icon" : "placeholder128.png",
         "default_title" : "settings"
     },
-    "content_scripts" : {
-        "matches" : ["*://*/*"],
-        "all_frams": "true",
-        "js" : "replacer.js",
-        "run_at" : "document_end"  
-    },
-    "background" : {
-        "service_worker" : "background.js"
-    },
+    "content_scripts" : [
+        {
+            "matches" : ["*://*/*"],
+            "all_frams": "true",
+            "js" : ["replacer.js"],
+            "run_at" : "document_end"  
+        }
+    ],
     "permissions" : [
         "storage"
     ]

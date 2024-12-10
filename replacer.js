@@ -1,7 +1,7 @@
 
-
+handleElement(document.querySelector('html'));
 //a function to handle one html element (including <html>)
-function handleElement(element) {
+async function handleElement(element) {
     //loops through all of the children of the element backwards
     for (let i = element.childNodes.length; i-- > 0;) {
         //creates the childelement for us to work with
@@ -15,47 +15,61 @@ function handleElement(element) {
                 //if not, do it all again to the child
                 handleElement(child);
             }
-        }
-        //checks if the child is a textnode (3), which directly contains display text
-        if (child.nodeType === 3) {
+        } else if (child.nodeType === 3) {
             //runs our work method on it
-            child.textContent = work(child.textContent);
+            if (typeof(child) === "string") {
+            } else {
+                child.textContent = work(child.textContent);
+            }
         }
     }
 }
 
 //the function that directly handles text
 function work(text) {
-    //start with length, start short, cm
-    replaceMeasure(text, "cm", "in", 0.394);
+    let words = replaceMeasure(text, "cm", "in", 0.394);
+    words = replaceMeasure(words, "millimeters", "inches", 0.0394);
+    return words;
 }
 function replaceMeasure(text, name, replacement, factor) {
-    while (text.includes(name)) {
-        replaceMeasureNext(text, name, replacement, factor);
+    let words = text
+    let i = 0;
+    let options = listPotential(text, name);
+    for (let i = 0; i < options.length; i++) {
+        text = replaceMeasureNext(text, name, replacement, factor, options[i]);
     }
+    return words;
 }
-function replaceMeasureNext(text, name, replacement, factor) {
+function listPotential(text, name) {
+    let textLength = text.length;
+    if (textLength === 0) {
+        return [];
+    }
+    let out = [];
+    let start = 0;
+    let index;
+    while (text.indexOf(name) != -1) {
+        out.push(text.indexOf(name, start));
+        start = text.indexOf(name,start) + name.length;
+    }
+    return out;
+}
+function replaceMeasureNext(text, name, replacement, factor, index) {
     const regex = /\p{L}/gu;
-    index = text.toLowerCase.indexOf("cm");
-    let numberExists = false;
-    let hasSpace = false;
     let num = 0;
-    let outText = "";
+    let outText = text;
     if (!regex.test(text[index+name.length])) {
         if (text[index-1] === ' ') {
             if (!isNaN(parseInt(text[index-2], 10))) {
-                numberExists = true;
-                hasSpace = true;
                 num = getNumberFromEnd(text.substring(0, index - 1)) * factor;
-                outText = text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + num + " " + replacement + text.substring(index + name.length);
+                outText = "" + text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + num + " " + replacement + text.substring(index + name.length);
             }
         } else if (!isNaN(parseInt(text[index-1]), 10)) {
-            numberExists = true;
-            hasSpace = false;
             num = getNumberFromEnd(text.substring(0, index));
-            outText = text.substring(0, getStartNumIndex(text.substring(0,index))) + num + replacement + text.substring(index + name.length);
+            outText = "" + text.substring(0, getStartNumIndex(text.substring(0,index))) + num + replacement + text.substring(index + name.length);
         }
     }
+    return outText;
 }
 function getStartNumIndex(text) {
     let index = 0;
@@ -63,14 +77,10 @@ function getStartNumIndex(text) {
         if (!isNaN(parseDouble(text.substring(i, text.length)))) {
             index = i;
         } else {
-            i = 0;
+            i = 1;
         }
     }
     return index;
-}
-function getReplaceLength(text) {
-    let length = text.length - getStartNumIndex(text);
-    return length;
 }
 //takes in text where the last index is end of a number
 function getNumberFromEnd(text) {
