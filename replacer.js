@@ -35,19 +35,26 @@ function replaceMeasure(text, name, replacement, factor) {
     }
 }
 function replaceMeasureNext(text, name, replacement, factor) {
+    const regex = /\p{L}/gu;
     index = text.toLowerCase.indexOf("cm");
     let numberExists = false;
     let hasSpace = false;
     let num = 0;
-    if (text[index-1] === ' ') {
-        if (!isNaN(parseInt(text[index-2], 10))) {
+    let outText = "";
+    if (!regex.test(text[index+name.length])) {
+        if (text[index-1] === ' ') {
+            if (!isNaN(parseInt(text[index-2], 10))) {
+                numberExists = true;
+                hasSpace = true;
+                num = getNumberFromEnd(text.substring(0, index - 1)) * factor;
+                outText = text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + num + " " + replacement + text.substring(index + name.length);
+            }
+        } else if (!isNaN(parseInt(text[index-1]), 10)) {
             numberExists = true;
-            hasSpace = true;
-            num = getNumberFromEnd(text.substring(0, index -1));
+            hasSpace = false;
+            num = getNumberFromEnd(text.substring(0, index));
+            outText = text.substring(0, getStartNumIndex(text.substring(0,index))) + num + replacement + text.substring(index + name.length);
         }
-    } else if (!isNaN(parseInt(text[index-1]), 10)) {
-        numberExists = true;
-        hasSpace = false;
     }
 }
 function getStartNumIndex(text) {
@@ -63,6 +70,7 @@ function getStartNumIndex(text) {
 }
 function getReplaceLength(text) {
     let length = text.length - getStartNumIndex(text);
+    return length;
 }
 //takes in text where the last index is end of a number
 function getNumberFromEnd(text) {
