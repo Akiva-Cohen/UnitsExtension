@@ -27,18 +27,16 @@ async function handleElement(element) {
 
 //the function that directly handles text
 function work(text) {
-    let words = replaceMeasure(text, "cm", "in", 0.394);
-    words = replaceMeasure(words, "millimeters", "inches", 0.0394);
-    return words;
+    text = replaceMeasure(text, "cm", "in", 0.394);
+    text = replaceMeasure(words, "mm", "in", 0.0394);
+    return text;
 }
 function replaceMeasure(text, name, replacement, factor) {
-    let words = text
-    let i = 0;
     let options = listPotential(text, name);
     for (let i = 0; i < options.length; i++) {
         text = replaceMeasureNext(text, name, replacement, factor, options[i]);
     }
-    return words;
+    return text;
 }
 function listPotential(text, name) {
     let textLength = text.length;
@@ -47,10 +45,9 @@ function listPotential(text, name) {
     }
     let out = [];
     let start = 0;
-    let index;
-    while (text.indexOf(name) != -1) {
+    while (text.indexOf(name, start) != -1) {
         out.push(text.indexOf(name, start));
-        start = text.indexOf(name,start) + name.length;
+        start = text.indexOf(name, start) + name.length;
     }
     return out;
 }
