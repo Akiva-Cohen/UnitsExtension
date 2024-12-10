@@ -1,7 +1,7 @@
 
 handleElement(document.querySelector('html'));
 //a function to handle one html element (including <html>)
-async function handleElement(element) {
+function handleElement(element) {
     //loops through all of the children of the element backwards
     for (let i = element.childNodes.length; i-- > 0;) {
         //creates the childelement for us to work with
@@ -11,7 +11,7 @@ async function handleElement(element) {
             //gets name of node: the name coresponds to the type of element
             let name = child.nodeName.toLowerCase();
             //checks if child is a style or script element, neither of which contain usefull text and need to not be messed with
-            if (name != 'style' && name != 'scripts') {
+            if (name != 'style' && name != 'script') {
                 //if not, do it all again to the child
                 handleElement(child);
             }
@@ -28,7 +28,7 @@ async function handleElement(element) {
 //the function that directly handles text
 function work(text) {
     text = replaceMeasure(text, "cm", "in", 0.394);
-    text = replaceMeasure(words, "mm", "in", 0.0394);
+    text = replaceMeasure(text, "mm", "in", 0.0394);
     return text;
 }
 function replaceMeasure(text, name, replacement, factor) {
@@ -57,11 +57,11 @@ function replaceMeasureNext(text, name, replacement, factor, index) {
     let outText = text;
     if (!regex.test(text[index+name.length])) {
         if (text[index-1] === ' ') {
-            if (!isNaN(parseInt(text[index-2], 10))) {
+            if (isNaN(parseInt(text[index-2], 10)) === false) {
                 num = getNumberFromEnd(text.substring(0, index - 1)) * factor;
                 outText = "" + text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + num + " " + replacement + text.substring(index + name.length);
             }
-        } else if (!isNaN(parseInt(text[index-1]), 10)) {
+        } else if (isNaN(parseInt(text[index-1]), 10) === false) {
             num = getNumberFromEnd(text.substring(0, index));
             outText = "" + text.substring(0, getStartNumIndex(text.substring(0,index))) + num + replacement + text.substring(index + name.length);
         }
@@ -71,7 +71,7 @@ function replaceMeasureNext(text, name, replacement, factor, index) {
 function getStartNumIndex(text) {
     let index = 0;
     for (let i = text.length; i-- > 0;) {
-        if (!isNaN(parseDouble(text.substring(i, text.length)))) {
+        if (isNaN(parseFloat(text.substring(i, text.length))) === false) {
             index = i;
         } else {
             i = 1;
@@ -82,7 +82,7 @@ function getStartNumIndex(text) {
 //takes in text where the last index is end of a number
 function getNumberFromEnd(text) {
     let index = getStartNumIndex(text);
-    let number = parseDouble(text.substring(index, text.length));
+    let number = parseFloat(text.substring(index, text.length));
     if (isInteger(number)) {
         return Math.floor(number);
     } else {
