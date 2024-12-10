@@ -12,6 +12,12 @@
         "default_icon" : "placeholder128.png",
         "default_title" : "settings"
     },
+    "content_scripts" : {
+        "matches" : ["*://*/*"],
+        "all_frams": "true",
+        "js" : "replacer.js",
+        "run_at" : "document_end"  
+    },
     "background" : {
         "service_worker" : "background.js"
     },
