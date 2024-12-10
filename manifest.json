@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Units Replacer",
+    "description": "Automatically convert units",
+    "version": "0.0.0",
+    "icons": {
+        "16" : "placeholder16.png",
+        "48" : "placeholder48.png",
+        "128" : "placeholder128.png"
+    }
+}
