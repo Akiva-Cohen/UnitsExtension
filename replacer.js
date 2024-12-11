@@ -41,6 +41,7 @@ function replaceKm(text) {
     for (let i = 0; i < startArr.length; i++) {
         text = replaceMeasure(text,startArr[i],toArr[i],factor);
     }
+    return text;
 }
 function replaceM(text) {
     let startArr = ["m","M","meter","meters","Meter","Meters"];
@@ -90,9 +91,7 @@ function replaceCm(text) {
 function replaceMeasure(text, name, replacement, factor) {
     let options = listPotential(text, name);
     for (let i = options.length; i-- > 0;) {
-        console.log(text);
         text = replaceMeasureNext(text, name, replacement, factor, options[i]);
-        console.log("after" + text);
     }
     return text;
 }
