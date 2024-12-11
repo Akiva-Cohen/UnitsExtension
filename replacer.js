@@ -30,8 +30,8 @@ function work(text) {
     let startArr = ["cm", "CM", "Cm", "centimeter", "Centimeter", "centimeters", "Centimeters", 'mm','MM','Mm','millimeter',"Millimeter","millimeters","Millimeers",'g','G',"gram","Gram","grams","Grams","kg","KG","Kg","kilogram","Kilogram","kilograms","Kilograms","m","M","meter","meters","Meter","Meters","km","KM","Kilometer","kilometer","Kilometers","kilometers"]
     let toArr = ["in",'IN',"In","inch","Inch",'inches',"Inches","in","IN","In","inch","Inch","inches","Inches","oz","Oz","ounce","Ounce","ounces",'Ounces','lbs','lbs','lbs',"pound","Pound","pounds","Pounds","ft","ft","foot","feet","Foot","Feet","mi","MI","Mile","mile","Miles","miles"]
     let factorArr = [0.394,0.394,0.394,0.394,0.394,0.394,0.394,0.0394, 0.0394,0.0394,0.0394,0.0394,0.0394,0.0394,0.353,0.353,0.353,0.353,0.353,2.205,2.205,2.205,2.205,2.205,2.205,2.205,3.281,3.281,3.281,3.281,3.281,3.281,0.621,0.621,0.621,0.621,0.621,0.621]
-    for(let i = 0; i < startArrArr.length; i++) {
-        text = replaceMeasure(text, startArr[i], toArrarr[i], factorArrarr[i]);
+    for(let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text, startArr[i], toArr[i], factorArr[i]);
     }
     return text;
 }
@@ -61,13 +61,15 @@ function replaceMeasureNext(text, name, replacement, factor, index) {
         if (text[index-1] === ' ') {
             if (isNaN(parseInt(text[index-2], 10)) === false) {
                 num = getNumberFromEnd(text.substring(0, index - 1));
+                num = num * factor;
                 num = num.toFixed(2);
-                outText = "" + text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + num + " " + replacement + text.substring(index + name.length);
+                outText = "" + text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + " " + num + " " + replacement + text.substring(index + name.length);
             }
         } else if (isNaN(parseInt(text[index-1]), 10) === false) {
-            num = getNumberFromEnd(text.substring(0, index)) * factor;
+            num = getNumberFromEnd(text.substring(0, index));
+            num = num * factor;
             num = num.toFixed(2);
-            outText = "" + text.substring(0, getStartNumIndex(text.substring(0,index))) + num + replacement + text.substring(index + name.length);
+            outText = "" + text.substring(0, getStartNumIndex(text.substring(0,index))) + " " + num + replacement + text.substring(index + name.length);
         }
     }
     return outText;

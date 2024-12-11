@@ -1,8 +1,8 @@
 //open setting page
 chrome.action.onClicked.addListener(() => {
-    chrome.tabs.create({
-        url: "settings.html"
-    });
+    //chrome.tabs.create({
+      //  url: "settings.html"
+    //});
 });
 
 //set initial settings
