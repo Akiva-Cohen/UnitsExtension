@@ -27,27 +27,29 @@ function handleElement(element) {
 
 //the function that directly handles text
 function work(text) {
-    text = replaceMeasure(text, "cm", "in", 0.394);
-    text = replaceMeasure(text, "mm", "in", 0.0394);
+    let startArr = ["cm", "CM", "Cm", "centimeter", "Centimeter", "centimeters", "Centimeters", 'mm','MM','Mm','millimeter',"Millimeter","millimeters","Millimeers",'g','G',"gram","Gram","grams","Grams","kg","KG","Kg","kilogram","Kilogram","kilograms","Kilograms","m","M","meter","meters","Meter","Meters","km","KM","Kilometer","kilometer","Kilometers","kilometers"]
+    let toArr = ["in",'IN',"In","inch","Inch",'inches',"Inches","in","IN","In","inch","Inch","inches","Inches","oz","Oz","ounce","Ounce","ounces",'Ounces','lbs','lbs','lbs',"pound","Pound","pounds","Pounds","ft","ft","foot","feet","Foot","Feet","mi","MI","Mile","mile","Miles","miles"]
+    let factorArr = [0.394,0.394,0.394,0.394,0.394,0.394,0.394,0.0394, 0.0394,0.0394,0.0394,0.0394,0.0394,0.0394,0.353,0.353,0.353,0.353,0.353,2.205,2.205,2.205,2.205,2.205,2.205,2.205,3.281,3.281,3.281,3.281,3.281,3.281,0.621,0.621,0.621,0.621,0.621,0.621]
+    for(let i = 0; i < startArrArr.length; i++) {
+        text = replaceMeasure(text, startArr[i], toArrarr[i], factorArrarr[i]);
+    }
     return text;
 }
 function replaceMeasure(text, name, replacement, factor) {
     let options = listPotential(text, name);
-    for (let i = 0; i < options.length; i++) {
+    for (let i = options.length; i-- > 0;) {
+        console.log(text);
         text = replaceMeasureNext(text, name, replacement, factor, options[i]);
+        console.log("after" + text);
     }
     return text;
 }
 function listPotential(text, name) {
-    let textLength = text.length;
-    if (textLength === 0) {
-        return [];
-    }
     let out = [];
     let start = 0;
     while (text.indexOf(name, start) != -1) {
         out.push(text.indexOf(name, start));
-        start = text.indexOf(name, start) + name.length;
+        start = out[out.length - 1] + name.length;
     }
     return out;
 }
@@ -55,26 +57,28 @@ function replaceMeasureNext(text, name, replacement, factor, index) {
     const regex = /\p{L}/gu;
     let num = 0;
     let outText = text;
-    if (!regex.test(text[index+name.length])) {
+    if (index + name.length === text.length || regex.test(text[index+name.length]) === false) {
         if (text[index-1] === ' ') {
             if (isNaN(parseInt(text[index-2], 10)) === false) {
-                num = getNumberFromEnd(text.substring(0, index - 1)) * factor;
+                num = getNumberFromEnd(text.substring(0, index - 1));
+                num = num.toFixed(2);
                 outText = "" + text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + num + " " + replacement + text.substring(index + name.length);
             }
         } else if (isNaN(parseInt(text[index-1]), 10) === false) {
-            num = getNumberFromEnd(text.substring(0, index));
+            num = getNumberFromEnd(text.substring(0, index)) * factor;
+            num = num.toFixed(2);
             outText = "" + text.substring(0, getStartNumIndex(text.substring(0,index))) + num + replacement + text.substring(index + name.length);
         }
     }
     return outText;
 }
 function getStartNumIndex(text) {
-    let index = 0;
+    let index = text.length - 1;
     for (let i = text.length; i-- > 0;) {
-        if (isNaN(parseFloat(text.substring(i, text.length))) === false) {
-            index = i;
+        if (isNaN(parseFloat(text.substring(i, text.length)))) {
+            return index;
         } else {
-            i = 1;
+            index = i;
         }
     }
     return index;
@@ -83,9 +87,5 @@ function getStartNumIndex(text) {
 function getNumberFromEnd(text) {
     let index = getStartNumIndex(text);
     let number = parseFloat(text.substring(index, text.length));
-    if (isInteger(number)) {
-        return Math.floor(number);
-    } else {
-        return number;
-    }
+    return number;
 }
