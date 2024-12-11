@@ -8,10 +8,6 @@
         "48" : "ruler48.png",
         "128" : "ruler128.png"
     },
-    "action" : {
-        "default_icon" : "ruler128.png",
-        "default_title" : "settings"
-    },
     "content_scripts" : [
         {
             "matches" : ["*://*/*"],
@@ -20,10 +16,6 @@
             "run_at" : "document_end"  
         }
     ],
-    "background" : {
-        "service_worker" : "background.js"
-    },
-    "permissions" : [
-        "storage"
-    ]
+    "background" : {},
+    "permissions" : []
 }
