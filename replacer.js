@@ -34,6 +34,15 @@ function work(text) {
     text = replaceKm(text);
     return text;
 }
+function replaceMl(text) {
+    let startArr = [];
+    let toArr = [];
+    let factor = 0.0338;
+    for (let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text, startArr[i], toArr[i], factor);
+    }
+    return text;
+}
 function replaceKm(text) {
     let startArr = ["km","KM","Kilometer","kilometer","Kilometers","kilometers"]
     let toArr = ["mi","MI","Mile","mile","Miles","miles"]
