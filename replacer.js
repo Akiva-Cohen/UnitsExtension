@@ -24,14 +24,66 @@ function handleElement(element) {
         }
     }
 }
-
 //the function that directly handles text
 function work(text) {
-    let startArr = ["cm", "CM", "Cm", "centimeter", "Centimeter", "centimeters", "Centimeters", 'mm','MM','Mm','millimeter',"Millimeter","millimeters","Millimeters",'g','G',"gram","Gram","grams","Grams","kg","KG","Kg","kilogram","Kilogram","kilograms","Kilograms","m","M","meter","meters","Meter","Meters","km","KM","Kilometer","kilometer","Kilometers","kilometers"]
-    let toArr = ["in",'IN',"In","inch","Inch",'inches',"Inches","in","IN","In","inch","Inch","inches","Inches","oz","Oz","ounce","Ounce","ounces",'Ounces','lbs','lbs','lbs',"pound","Pound","pounds","Pounds","ft","ft","foot","feet","Foot","Feet","mi","MI","Mile","mile","Miles","miles"]
-    let factorArr = [0.394,0.394,0.394,0.394,0.394,0.394,0.394,0.0394, 0.0394,0.0394,0.0394,0.0394,0.0394,0.0394,0.353,0.353,0.353,0.353,0.353,2.205,2.205,2.205,2.205,2.205,2.205,2.205,3.281,3.281,3.281,3.281,3.281,3.281,0.621,0.621,0.621,0.621,0.621,0.621]
-    for(let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text, startArr[i], toArr[i], factorArr[i]);
+    text = replaceCm(text);
+    text = replaceMm(text);
+    text = replaceG(text);
+    text = replaceKg(text);
+    text = replaceM(text);
+    text = replaceKm(text);
+    return text;
+}
+function replaceKm(text) {
+    let startArr = ["km","KM","Kilometer","kilometer","Kilometers","kilometers"]
+    let toArr = ["mi","MI","Mile","mile","Miles","miles"]
+    let factor = 0.621;
+    for (let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+    }
+}
+function replaceM(text) {
+    let startArr = ["m","M","meter","meters","Meter","Meters"];
+    let toArr = ["ft","ft","foot","feet","Foot","Feet"];
+    let factor = 3.281;
+    for (let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+    }
+    return text;
+}
+function replaceKg(text) {
+    let startArr = ["kg","KG","Kg","kilogram","Kilogram","kilograms","Kilograms"];
+    let toArr = ['lbs','lbs','lbs',"pound","Pound","pounds","Pounds"];
+    let factor = 2.205;
+    for (let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text,startArr[i],toArr[i],factor)
+    }
+    return text;
+}
+function replaceG(text) {
+    let startArr = ['g','G',"gram","Gram","grams","Grams"];
+    let toArr = ["oz","Oz","ounce","Ounce","ounces",'Ounces'];
+    let factor = 0.353;
+    for (let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+    }
+    return text;
+}
+function replaceMm(text) {
+    let startArr = ['mm','MM','Mm','millimeter',"Millimeter","millimeters","Millimeters"];
+    let toArr = ["in","IN","In","inch","Inch","inches","Inches"];
+    let factor = 0.0394;
+    for (let i = 0; i < startArr.length; i++) {
+        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+    }
+    return text;
+}
+function replaceCm(text) {
+    let startArr = ["cm", "CM", "Cm", "centimeter", "Centimeter", "centimeters", "Centimeters"];
+    let toArr = ["in",'IN',"In","inch","Inch",'inches',"Inches"];
+    let factor = 0.394;
+    for (let i = 0; i < startArr.length;i++) {
+        text = replaceMeasure(text,startArr[i],toArr[i],factor);
     }
     return text;
 }
