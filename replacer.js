@@ -32,6 +32,7 @@ function work(text) {
     text = replaceKg(text);
     text = replaceM(text);
     text = replaceKm(text);
+    text = replaceC(text);
     return text;
 }
 function replaceC(text) {
