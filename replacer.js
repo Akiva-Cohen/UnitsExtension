@@ -118,7 +118,8 @@ function replaceMeasureNext(text, name, replacement, factor, index) {
     let num = 0;
     let outText = text;
     if (index + name.length === text.length || regex.test(text[index+name.length]) === false) {
-        if (text[index-1] === ' ') {
+        let betweenChars = [' ', '-',];
+        if (betweenChars.includes(text[index - 1])) {
             if (isNaN(parseInt(text[index-2], 10)) === false) {
                 num = getNumberFromEnd(text.substring(0, index - 1));
                 num = num * factor;
