@@ -1,5 +1,11 @@
-
-handleElement(document.querySelector('html'));
+new promise((resolve)=> {
+    chrome.storage.local.get(["on"], function (output) {
+        x = output.on;
+        if (x) {
+            handleElement(document.querySelector('html'));
+        }
+    });
+});
 //a function to handle one html element (including <html>)
 function handleElement(element) {
     //loops through all of the children of the element backwards
