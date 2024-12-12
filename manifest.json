@@ -19,6 +19,13 @@
     "background" : {
         "service_worker": "background.js"
     },
+    "action" : {
+        "default_icon": {
+            "16" : "ruler16.png",
+            "48": "ruler48.png",
+            "128": "ruler128.png"
+        }
+    },
     "permissions" : [
         "storage"
     ]
