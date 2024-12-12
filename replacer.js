@@ -39,7 +39,7 @@ function replaceMl(text) {
     let toArr = [];
     let factor = 0.0338;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text, startArr[i], toArr[i], factor);
+        text = replaceMeasure(text, startArr[i], toArr[i], factor,0,2);
     }
     return text;
 }
@@ -48,7 +48,7 @@ function replaceKm(text) {
     let toArr = ["mi","MI","Mile","mile","Miles","miles"]
     let factor = 0.621;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2);
     }
     return text;
 }
@@ -57,7 +57,7 @@ function replaceM(text) {
     let toArr = ["ft","ft","foot","feet","Foot","Feet"];
     let factor = 3.281;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2);
     }
     return text;
 }
@@ -66,7 +66,7 @@ function replaceKg(text) {
     let toArr = ['lbs','lbs','lbs',"pound","Pound","pounds","Pounds"];
     let factor = 2.205;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor)
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2)
     }
     return text;
 }
@@ -75,7 +75,7 @@ function replaceG(text) {
     let toArr = ["oz","Oz","ounce","Ounce","ounces",'Ounces'];
     let factor = 0.353;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2);
     }
     return text;
 }
@@ -84,7 +84,7 @@ function replaceMm(text) {
     let toArr = ["in","IN","In","inch","Inch","inches","Inches"];
     let factor = 0.0394;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2);
     }
     return text;
 }
@@ -93,14 +93,14 @@ function replaceCm(text) {
     let toArr = ["in",'IN',"In","inch","Inch",'inches',"Inches"];
     let factor = 0.394;
     for (let i = 0; i < startArr.length;i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor);
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2);
     }
     return text;
 }
-function replaceMeasure(text, name, replacement, factor) {
+function replaceMeasure(text, name, replacement, factor, offset, places) {
     let options = listPotential(text, name);
     for (let i = options.length; i-- > 0;) {
-        text = replaceMeasureNext(text, name, replacement, factor, options[i]);
+        text = replaceMeasureNext(text, name, replacement, factor, offset, places, options[i]);
     }
     return text;
 }
@@ -113,7 +113,7 @@ function listPotential(text, name) {
     }
     return out;
 }
-function replaceMeasureNext(text, name, replacement, factor, index) {
+function replaceMeasureNext(text, name, replacement, factor, offset, places, index) {
     const regex = /\p{L}/gu;
     let num = 0;
     let outText = text;
@@ -123,13 +123,15 @@ function replaceMeasureNext(text, name, replacement, factor, index) {
             if (isNaN(parseInt(text[index-2], 10)) === false) {
                 num = getNumberFromEnd(text.substring(0, index - 1));
                 num = num * factor;
-                num = num.toFixed(2);
+                num = num + offset;
+                num = num.toFixed(places);
                 outText = "" + text.substring(0, getStartNumIndex(text.substring(0, index - 1))) + " " + num + " " + replacement + text.substring(index + name.length);
             }
         } else if (isNaN(parseInt(text[index-1]), 10) === false) {
             num = getNumberFromEnd(text.substring(0, index));
             num = num * factor;
-            num = num.toFixed(2);
+            num = num + offset;
+            num = num.toFixed(places);
             outText = "" + text.substring(0, getStartNumIndex(text.substring(0,index))) + " " + num + replacement + text.substring(index + name.length);
         }
     }
