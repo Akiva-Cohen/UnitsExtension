@@ -16,6 +16,10 @@
             "run_at" : "document_end"  
         }
     ],
-    "background" : {},
-    "permissions" : []
+    "background" : {
+        "service_worker": "background.js"
+    },
+    "permissions" : [
+        "storage"
+    ]
 }
