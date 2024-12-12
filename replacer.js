@@ -34,12 +34,13 @@ function work(text) {
     text = replaceKm(text);
     return text;
 }
-function replaceMl(text) {
-    let startArr = [];
-    let toArr = [];
-    let factor = 0.0338;
+function replaceC(text) {
+    let startArr = ['°c',"°C","° celsius","° Celsius","Degrees celsius","Degrees Celsius","degrees celsius","degrees Celsius"];
+    let toArr = ['°f','°F',"° fahrenheit","° Fahrenheit","Degrees fahrenheit","Degrees Fahrenheit","degrees fahrenheit","degrees Fahrenheit"];
+    let factor = 1.8;
+    let offset = 32;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text, startArr[i], toArr[i], factor,0,2);
+        text = replaceMeasure(text, startArr[i], toArr[i], factor,offset,2);
     }
     return text;
 }
@@ -84,7 +85,7 @@ function replaceMm(text) {
     let toArr = ["in","IN","In","inch","Inch","inches","Inches"];
     let factor = 0.0394;
     for (let i = 0; i < startArr.length; i++) {
-        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,2);
+        text = replaceMeasure(text,startArr[i],toArr[i],factor,0,3);
     }
     return text;
 }
