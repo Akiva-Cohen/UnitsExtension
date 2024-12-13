@@ -1,4 +1,4 @@
-new promise((resolve)=> {
+new Promise((resolve)=> {
     chrome.storage.local.get(["on"], function (output) {
         x = output.on;
         if (x) {
