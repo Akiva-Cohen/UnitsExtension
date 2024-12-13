@@ -4,6 +4,7 @@ new promise((resolve)=> {
         if (x) {
             handleElement(document.querySelector('html'));
         }
+        resolve();
     });
 });
 //a function to handle one html element (including <html>)
